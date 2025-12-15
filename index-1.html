@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocOctavius</title>
+
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1f2937;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+        }
+        a {
+            color: #6d28d9;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        a:hover {
+            color: #7c3aed;
+            text-decoration: underline;
+        }
+        .text-muted {
+            color: #2b7280;
+            font-size: 0.875rem;
+        }
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .nav-container {
+            display: flex;
+            align-items: center;
+            padding: 0;
+        }
+        .nav-pages {
+            width: 100%;
+            justify-items: center;
+        }
+        .nav-links {
+            display: flex;
+            position: relative;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+            right : 10%;
+        }
+        .nav-links a {
+            color: #1f2937;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: #6d28d9;
+            text-decoration: none;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        .logo-icon {
+            width: 5.5rem;
+            height: 2rem;
+            background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+            border-radius: 0.625rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.4rem 0.5rem 0.5rem 0.5rem;
+            margin-left: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 1rem;
+                background: #ffffff;
+                padding: 1.5rem;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            .nav-links.active {
+                display: flex;
+                margin: 0;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .logo-text {
+                display: none;
+            }
+        }
+
+
+
+
+        .hero {
+            background: linear-gradient(135deg, #ffffff 0%, rgba(109, 40, 217, 0.05) 100%);
+            padding: 2rem 2rem 3rem;
+        }
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        .hero-text h1 {
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        .hero-text p {
+            font-size: 1.125rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 30rem;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            background: rgba(109, 40, 217, 0.1);
+            color: #6d28d9;
+            padding: 0.2rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6d28d9, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        button, .btn {
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            transition: all 0.3s ease;
+            border-radius: 0.625rem;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #0ea5e9, #6d28d9, #0ea5e9);
+            width: 12rem;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.2);
+        }
+        .btn-primary:hover {
+            box-shadow: 0 6px 20px rgba(109, 40, 217, 0.3);
+            transform: translateY(-2px);
+        }
+        .btn-secondary {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            padding: 0.75rem 1.5rem;
+            font-weight: 500;
+        }
+        .btn-secondary:hover {
+            background-color: #e5e7eb;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .stat {
+            padding-top: 1rem;
+            justify-items: center;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0ea5e9, #6d28d9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        .hero-code {
+            background: #1f2937;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #374151;
+        }
+        .code-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 2rem;
+        }
+        .code-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        .code-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+        }
+        .code-dot.red { background: #ef4444; }
+        .code-dot.yellow { background: #eab308; }
+        .code-dot.green { background: #22c55e; }
+        .code-content {
+            font-family: 'Courier New', 'Fira Code', monospace;
+            color: #e5e7eb;
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre;
+            overflow-x: auto;
+        }
+
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+            .code-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+
+        .features {
+            background: #ffffff;
+            padding: 4rem 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .section-header h2 {
+            margin-bottom: 1rem;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .feature-card {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            padding: 2rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            border-color: #6d28d9;
+            border-width: 3px;
+            box-shadow: 0 40px 40px rgba(109, 40, 217, 0.1);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .feature-card h3 {
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+
+        footer {
+            background: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            padding: 1rem 4rem 1rem 0.5rem;
+            margin-top: 5rem;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5rem;
+            margin-bottom: 2rem;
+            justify-items: center;
+        }
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+        .footer-section ul {
+            list-style: none;
+            padding-inline-start: 0;
+        }
+        .footer-section li {
+            margin-bottom: 0.375rem;
+        }
+        .footer-section a {
+            color: #6b7280;
+        }
+        .footer-section a:hover {
+            color: #6d28d9;
+        }
+        .footer-bottom {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 2rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+
+
+        .page {
+            display: none;
+            min-height: 60vh;
+            padding: 0;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .placeholder-content {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .placeholder-icon {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+        }
+
+        .placeholder-content h1 {
+            margin-bottom: 1rem;
+        }
+
+        .placeholder-content p {
+            color: #6b7280;
+            margin-bottom: 2rem;
+            max-width: 25rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+
+
+        .tutorials-list-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem 0;
+        }
+        .tutorials-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .tutorial-item {
+            position: relative;
+            padding: 1.5rem;
+            border: 5px solid #e5e7eb;
+            border-radius: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #ffffff;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .tutorial-item.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f3f4f6;
+        }
+        .tutorial-item:not(.locked):hover {
+            border-color: #6d28d9;
+            box-shadow: 0 4px 20px rgba(109, 40, 217, 0.15);
+            transform: translateY(-2px);
+        }
+        .tutorial-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .tutorial-item-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, #6d28d9, #000000);
+            color: white;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.125rem;
+        }
+        .tutorial-item-status {
+            font-size: 1.5rem;
+        }
+        .tutorial-item-status.completed {
+            color: #22c55e;
+        }
+        .tutorial-item-status.locked {
+            color: #6b7280;
+        }
+        .tutorial-item-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f2937;
+        }
+        .tutorial-item.locked .tutorial-item-title {
+            color: #6b7280;
+        }
+        .tutorial-item-meta {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        .tutorials-progress {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.05), rgba(14, 165, 233, 0.05));
+            border-radius: 1rem;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 9999px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6d28d9, #0ea5e9);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+
+        .tutorial-detail {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .tutorial-detail-header {
+            margin-bottom: 2rem;
+        }
+        .tutorial-detail-breadcrumb {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        .tutorial-detail-breadcrumb a {
+            cursor: pointer;
+            color: #6d28d9;
+        }
+        .tutorial-detail-header h1 {
+            margin-bottom: 1rem;
+        }
+        .tutorial-detail-content {
+            margin: 2rem 0;
+        }
+        .tutorial-detail-section {
+            margin-bottom: 2rem;
+        }
+        .tutorial-detail-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .tutorial-detail-section p {
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            color:  #1f2937;
+        }
+        .tutorial-detail-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e5e7eb;
+        }
+        .btn-read {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+        }
+        .case-tutorial {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid #374151;
+        }
+        .image-container {
+            width: 60%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            margin: 20px auto;
+        }
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+
+        @media (max-width: 768px) {
+            .tutorials-list-container {
+                padding: 1rem;
+            }
+
+            .tutorial-item {
+                padding: 1.25rem;
+            }
+
+            h1 { font-size: 2rem; }
+        }
+    </style> 
+</head>
+<body>
+    <nav>
+        <div class="container">
+            <div class="nav-container">
+                <div class="logo">
+                    <div class="logo-icon">DOC++</div>
+                    <span class="logo-text">DocOctavius</span>
+                </div>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+                <div class="nav-pages">
+                    <ul class="nav-links" id="navLinks">
+                        <li><a href="#" onclick="showPage('home'); return false;">Acasă</a></li>
+                        <li><a href="#" onclick="showPage('tutorials'); return false;">Tutoriale</a></li>
+                        <li><a href="#" onclick="showPage('docs'); return false;">Documentații</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="content">
+        <div id="page-home" class="page active">
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-content">
+                        <div class="hero-text">
+                            <div class="badge">⚡ Însușește C++ de la zero</div>
+                            <h1>Învață a <span class="gradient-text">programa în C++</span> corect</h1>
+                            <p>Stăpânește limbajul C++ modern prin tutoriale practice, exemple concrete și exerciții practice de codare. De la noțiuni de bază la concepte avansate.</p>
+                            
+                            <div class="hero-buttons">
+                                <button onclick="showPage('alltutorials'); return false;" class="btn btn-primary">Începe a învăța →</button>
+                            </div>
+
+                            <div class="stats">
+                                <div class="stat">
+                                    <div class="stat-number">8</div>
+                                    <div class="stat-label">Tutoriale</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">2+</div>
+                                    <div class="stat-label">Studenți</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="stat-number">99%</div>
+                                    <div class="stat-label">Gratis</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    cout &lt;&lt; "C++ is awesome!";
+    return 0;
+}</div>
+                        </div>               
+                    </div>
+                </div>
+            </section>
+            <section class="features">
+                <div class="container">
+                    <div class="section-header">
+                        <h1>De ce să înveți C++ cu DocOctavius?</h1>
+                        <p class="text-muted">Parcurs structurat de învățare cu exemple practice și subiecte concrete. De la noțiuni de bază la concepte avansate.</p>
+                    </div>
+
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h3>Ghid de învățare rapid</h3>
+                            <p class="text-muted">Începeți să programați în câteva minute cu ajutorul tutorialelor și ghidurilor noastre de configurare ușor de utilizat pentru începători.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">🎯</div>
+                            <h3>Învăţare vizuală</h3>
+                            <p class="text-muted">Învață prin practică cu exemple exacte de cod și exerciții vizuale.</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">📚</div>
+                            <h3>Materiale utile</h3>
+                            <p class="text-muted">Teme ușoare din Capitolul 1 al manualului de clasa a 11 2020.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="page-tutorials" class="page">
+        <div class="container">
+            <div class="placeholder-content">
+                <div class="placeholder-icon">📚</div>
+                <h1 class="gradient-text">Toate tutorialele</h1>
+                <p>Descoperă colecția noastră de tutoriale C++, limitata și focusată pe Tipuri de date structurate.</p>
+                <button class="btn btn-primary" onclick="showPage('alltutorials'); return false;">Start</button>
+            </div>
+        </div>
+    </div>
+    <div id="page-docs" class="page">
+        <div class="container">
+            <div class="placeholder-content" style="margin-top: 4rem;">
+                <div class="placeholder-icon">📜</div>
+                <h1 class="gradient-text">Documentații suplimentare</h1>
+                <p>Manual de clasa a 11 2020, C++ Capitolul 1</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="page-alltutorials" class="page">
+            <div class="container">
+                <div class="tutorials-list-container">
+                    <h1 class="gradient-text" style="margin-bottom: 1rem;">C++ Tutoriale</h1>
+                    <p class="text-muted" style="margin-bottom: 2rem;">Învață primul capitol pentru Clasa 11 C++. Completează fiecare lecție pentru a debloca următoarea.</p>
+
+                    <div class="tutorials-progress">
+                        <div>Progres: <span id="progress-count">0</span> / 8 lecții completate</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                    </div>
+
+                    <div class="tutorials-column" id="tutorials-list">
+                        <!-- JavaScript -->
+                    </div>
+
+                    <div style="margin-top: 3rem; text-align: center;">
+                        <button class="btn btn-secondary" onclick="showPage('home'); return false;">← Înapoi acasă</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="page-tutorial-1" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Date simple și date structurate</h1>
+                        <p class="text-muted">Învață diferența dintre date simple și date structurate, cum se folosesc tipurile de date în C++ și cum putem organiza informațiile mai complexe folosind șiruri de caractere și tablouri.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="tutorial-detail-section">
+                            <h2>În calculatorul, informația este prelucrată sub formă de date. </h2>
+                            <p>Aceste date pot fi numere, caractere sau valori logice. Intern, calculatorul reprezintă datele în sistem binar, însă limbajul C++ oferă tipuri de date care permit lucrul ușor cu acestea.</p>
+                            <p>Tipurile de date simple permit memorarea unei singure valori. În C++ acestea sunt: int, float, double, bool, char și tipurile enumerate (enum). Ele stau la baza tuturor programelor.</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">int a = 10;
+float b = 3.5;
+bool ok = true;
+char c = 'A';</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>De ce avem nevoie de date structurate?</h2>
+                            <p>Datele simple nu sunt suficiente pentru a reprezenta informații complexe. De exemplu, un text sau o listă de valori nu pot fi memorate eficient folosind un singur caracter sau un singur număr. Pentru aceste situații, C++ oferă date structurate.</p>
+                            <p>În C++, un șir de caractere poate fi reprezentat prin tipul string. Acesta este format din mai multe caractere de tip char și permite operații precum citirea, afișarea și modificarea textului.</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">#include &lt;string&gt;
+
+string text = "Informatica Clasa11";</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Tablouri unidimensionale</h2>
+                            <p>Permit memorarea mai multor valori de același tip. Fiecare element este identificat printr-un indice. Un exemplu este memorarea consumului zilnic de energie electrică pe durata unei luni.</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">float consum[31];</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Tablouri bidimensionale</h2>
+                            <p>Structuri de tip matrice, organizate pe rânduri și coloane. Ele sunt folosite pentru a reprezenta date organizate după două criterii, cum ar fi statistica la diferite zile din mai multe luni.</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">float consum[12][31];</div>
+                        </div>
+                        <div class="tutorial-detail-section" style="padding-top: 4rem;">
+                            <h2 class="case-tutorial" style="font-size: 110%;">Datele formate prin agregarea (unirea într-un tot) a unor date simple se numesc date structurate.<br>Tipurile de date utilizate pentru definirea unor astfel de date se numesc tipuri de date structurate.</h2>
+                            <p>Pe lângă șirurile de caractere și tablouri, limbajele de programare oferă și alte tipuri de date structurate, precum <b>articolele, mulțimile și fișierele</b>.</p>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(1); return false;">✓ Marchează ca citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="page-tutorial-2" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Tablouri unidimensionale și bidimensionale în C++</h1>
+                        <p>Tabloul începe cu 0 ca primul indice, iar componentele tablourilor sunt toți de același tip de date fie: int, float, char etc. Asupra elementelor tabloului se pot efectua toate operațiile specifice tipului lor.</p>
+                    </div>
+                    <div class="tutorial-detail-content" style="margin-top: 3rem;">
+                        <div class="tutorial-detail-section">
+                            <h2>Tablou unidimensional</h2>
+                            <p>Tip de date structurat care permite memorarea unui număr fix de valori de același tip.</p>
+                        </div>
+                        <div class="code-grid">
+                            <div>
+                                <h2>Declarat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">&lt;Tip&gt; &lt;Nume_tablou&gt;[&lt;Număr_componente&gt;];</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h2>Accesat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">&lt;Nume_tablou&gt;[&lt;indicele&gt;]</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tutorial-detail-section" style="margin-top: 4rem;">
+                            <h2>Tablou bidimensional</h2>
+                            <p>Tip de date structurat organizat sub forma unui tabel, cu rânduri și coloane.</p>
+                        </div>
+                        <div class="code-grid">
+                            <div>
+                                <h2>Declarat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">&lt;Tip&gt; &lt;Nume_tablou&gt;[&lt;Număr_linii&gt;][&lt;Număr_coloane&gt;];</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h2>Accesat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">&lt;Nume_tablou&gt;[&lt;linia&gt;][&lt;coloana&gt;]</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(2); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div id="page-tutorial-3" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Șiruri de caractere ca tablouri unidimensionale (char)</h1>
+                        <p>Un șir de caractere poate fi reprezentat printr-un tablou unidimensional de tip char. Acesta se termină obligatoriu cu caracterul special '\0' pe ultima poziție.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="code-grid">
+                            <div>
+                                <h2>Declarat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">typedef char &lt;NumeTip&gt;[&lt;Număr_componente&gt;]; 
+//ex de inițializare
+char S[&lt;Număr_componente&gt;] = "Ion";
+char S[&lt;Număr_componente&gt;] = {'I','o','n','\0'};</div>
+                                </div>
+                            </div>
+                            <div>
+                                <h2>Accesat ca:</h2>
+                                <div class="hero-code">
+                                    <div class="code-header">
+                                        <div class="code-dot red"></div>
+                                        <div class="code-dot yellow"></div>
+                                        <div class="code-dot green"></div>
+                                    </div>
+                                    <div class="code-content">char P[4];
+P[0]='I'; P[1]='o'; P[2]='n'; //P[3] este \0
+cout &lt;&lt; P;</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Funcții predefinite pentru șiruri</h2>
+                            <ul style="list-style-type: disc;">
+                                <li>strcpy(S1, S2) - copiază șirul S2 în S1</li>
+                                <li>strcat(S1, S2) - concatenează S2 la S1</li>
+                                <li>strlen(S) - lungimea șirului (fără '\0')</li>
+                            </ul>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">#include &lt;cstring&gt;
+
+strcpy(S1, S2);  
+cout &lt;&lt; S1 &lt;&lt; endl;
+
+strcat(S1, " "); // adaugăm un spațiu între cuvinte
+strcat(S1, S3);  
+cout  &lt;&lt; S1 &lt;&lt; endl;
+
+int lungime = strlen(S1);
+cout &lt;&lt; lungime &lt;&lt; endl;</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Șiruri de caractere de tip string</h2>
+                            <p>Tip predefinit care nu necesită dimensiune maximă. Mai ușor de folosit decât char[].</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">#include &lt;string&gt; 
+string text = “Informatica21;
+cout &lt;&lt; text;</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Operații pentru tip string</h2>
+                            <p>Operator = - Copiere / Atribuire<br>Operator + - Concatenare<br>length() sau .size() - Lungime<br>+ comparatiile etc.</p>
+                        </div>
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">S1 = S2;
+S1 = S2 + S3;
+int l = S1.length();</div>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(3); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <div id="page-tutorial-4" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Ce este un articol (struct)?</h1>
+                        <p>În informatică, un articol (numit și înregistrare sau structură) reprezintă o grupare de date diferite sub un singur nume.</p>
+                        <p>Componentele unui articol se numesc câmpuri și pot fi de tipuri diferite (ex.: int, float, string, alte structuri).</p>
+                        <p>Fiecare câmp are un nume unic (identificator).</p>
+                        <p>(ex: Fiecare elev din clasă poate reprezenta un articol cu trei câmpuri introduse: Nume, Prenume, NotaMedie.)</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="hero-code">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">struct NumeTip {
+    Tip1 NumeCamp1;
+    Tip2 NumeCamp2;
+    ...
+    TipN NumeCampN;
+}; 
+ListaVariabile;</div>
+                        </div>
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">struct Elev {
+    string Nume;
+    string Prenume;
+    float NotaMedie;
+};
+Elev E1, E2;</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Structuri și tablouri de structuri</h2>
+                            <p>Poți crea tablouri de structuri pentru a gestiona mai mulți elevi:</p>
+                        </div>
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">struct Elev{
+    string Nume;
+};
+typedef Elev ListaElevilor[5];
+ListaElevilor LE;
+LE[0].Nume = "Ion"; // Numele primului elev
+cout &lt;&lt; LE[0].Nume;</div>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(4); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div id="page-tutorial-5" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Ce este o mulțime?</h1>
+                        <p>O mulțime este o colecție de elemente care au o proprietate comună.</p>
+                        <p>În C++, mulțimile nu au un tip dedicat, ele sunt reprezentate prin tablouri unidimensionale.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">int A[100];        // mulțime de numere întregi
+char B[26];        // mulțime de caractere
+enum Zi {L, Ma, Mi, J, V, S, D};
+Zi Z[7];           // mulțime de zile</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Intersecția a două mulțimi</h2>
+                            <p>Un element intră în C dacă apare în ambele mulțimi.</p>
+                        </div>
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">int A[] = {1, 2, 3, 4};
+int B[] = {3, 4, 5};
+int C[10], nC = 0;
+
+for (int i = 0; i &lt; 4; i++)
+  for (int j = 0; j &lt; 3; j++)
+    if (A[i] == B[j])
+      C[nC++] = A[i];
+      
+for (int i = 0; i &lt; nC; i++)
+    cout &lt;&lt; C[i] &lt;&lt; " ";</div>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>Vector caracteristic</h2>
+                            <p>Vectorul caracteristic codifică o mulțime universală. Nu trebuie să o scrii explicit. Iar apoi indicele vectorului cu valori 1 este transcris ca valoare în mulțimea A.</p>
+                        </div>
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">//U = {0, 1, 2, 3, 4, 5} mulțimea universală
+//A = {1, 3, 5}
+//V:  0 1 0 1 0 1
+
+int V[6] = {0};
+V[1] = 1 //→ 1 este în A
+V[3] = 1 //→ 3 este în A
+V[5] = 1 //→ 5 este în A
+V[2] = 0 //→ 2 nu este în A
+
+cout &lt;&lt; "Elementele multimii A sunt: ";
+        for (int i = 0; i &lt; 7; i++)
+            if (V[i] == 1)
+                cout &lt;&lt; i &lt;&lt; " ";</div>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(5); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="page-tutorial-6" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Ce este un fişier?</h1>
+                        <p>Până acum, programele citeau date de la tastatură și afișau rezultatele pe ecran. Datele stocate în variabile se pierd la închiderea programului. Pentru volume mari de date sau păstrare pe termen lung, datele trebuie salvate în fişiere.</p>
+                        <p>Un fişier este o colecţie de date cu un nume, păstrată pe un suport extern (disc, memorie flash etc.). În C++, fișierul este o structură de date formată din înregistrări. Sfârșitul fișierului este marcat de simbolul EOF. Fișierul fără înregistrări se numește fișier vid.</p>
+                        <p class="text-muted">Observație: metodele de prelucrare a fișierelor pot depinde de sistemul de operare și mediul de programare.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="tutorial-detail-section">
+                            <h2>Tipuri de fișiere</h2>
+                            <p>După operațiile permise:</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Fișiere de intrare - doar citire.</li>
+                                <li>Fișiere de ieșire - doar scriere.</li>
+                                <li>Fișiere de actualizare - citire și scriere.</li>
+                            </ul>
+                            <p>După modul de acces:</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Acces secvențial - înregistrările se prelucrează în ordine.</li>
+                                <li>Acces direct - înregistrările pot fi prelucrate în orice ordine.</li>
+                            </ul>
+                            <p>După interpretarea conținutului:</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Fișiere text - conțin caractere, structurate pe linii.</li>
+                                <li>Fișiere binare - datele sunt stocate ca octeți.</li>
+                            </ul>
+                            <h2>Operații cu fișiere:</h2>
+                            <ul style="list-style-type: decimal;">
+                                <li>  Deschiderea fișierului</li>
+                                <li>  Citirea/Scrierea datelor</li>
+                                <li>  Închiderea fișierului</li>
+                            </ul>
+                        </div>
+                        <div class="tutorial-detail-section">
+                            <h2>În C++, prelucrarea se face prin fluxuri (streams)</h2>
+                        </div>
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">#include <fstream>
+
+// Citire din fișier
+ifstream FI("C:\\REZULTAT\\R.DAT");
+FI >> x;
+
+// Scriere în fișier
+ofstream FE("D:\\D.CHR");
+FE &lt;&lt; x;
+
+// Închidere fișiere
+FI.close();
+FE.close();</div>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(6); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="page-tutorial-7" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Ce este un fișier secvențial?</h1>
+                        <p>Este un fișier în care datele sunt stocate într-o anumită ordine, unul după altul. Poți citi sau scrie doar începând de la primul element și continuând pas cu pas. Fișierul secvențial este ca o carte: trebuie să citești paginile în ordine; nu poți sări la pagina 10 fără să treci prin primele 9. Datele nu se pierd când programul se închide. Pot fi citite și scrise succesiv, în ordine, ușor de procesat.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="hero-code" style="margin-top: 2rem;">
+                            <div class="code-header">
+                                <div class="code-dot red"></div>
+                                <div class="code-dot yellow"></div>
+                                <div class="code-dot green"></div>
+                            </div>
+                            <div class="code-content">//exemplu
+
+#include &lt;iostream&gt;
+#include &lt;fstream>&gt;
+#include &lt;cstring&gt;
+using namespace std;
+
+struct elev {
+    char nume[15];
+    char prenume[20];
+    float NotaMedie;
+};
+
+int main() {
+    ofstream f("elevi.in");
+    elev e[50];
+    int n, i;
+
+    cout &lt; "Dati numarul de elevi: ";
+    cin >> n;
+    cin.get(); // consumă EOL, scapă de taste neprocesate (Enter-ul rămas în buffer), scriere continua clară după introducerea unui număr cu cin
+
+    for(i = 1; i &lt;= n; i++) {
+        cout &lt; "Introduceti numele elevului " &lt; i &lt; ": ";
+        cin.get(e[i].nume, 15); cin.get();
+        cout &lt; "Introduceti prenumele elevului " &lt; i &lt; ": ";
+        cin.get(e[i].prenume, 20); cin.get();
+        cout &lt; "Introduceti nota medie: ";
+        cin >> e[i].NotaMedie; cin.get();
+
+        f &lt; e[i].nume &lt; ' ' &lt; e[i].prenume &lt; ' ' &lt; e[i].NotaMedie &lt; endl;
+    }
+
+    f.close();
+    return 0;
+}
+</div>
+                        </div>
+                        <div class="image-container">
+                          <img src="1.png" alt="Beautiful Image">
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(7); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <div id="page-tutorial-8" class="page">
+            <div class="container">
+                <div class="tutorial-detail" style="padding: 3rem 0;">
+                    <div class="tutorial-detail-breadcrumb">
+                        <a onclick="showPage('alltutorials'); return false;">← Înapoi la Tutoriale</a>
+                    </div>
+                    <div class="tutorial-detail-header">
+                        <h1>Ce este un fișier text?</h1>
+                        <p>Este un fișier care conține caractere organizate pe linii. Fiecare linie are lungime variabilă, iar sfârșitul ei este marcat cu EOL (End Of Line, \n). Sfârșitul fișierului este marcat cu EOF (End Of File). Accesul la date este secvențial, adică citirea sau scrierea se face în ordine, caracter cu caracter sau linie cu linie.</p>
+                        <p>Fișierele text conțin doar caractere ASCII. Lungimea liniilor este variabilă → nu poți calcula poziția unei linii dinainte. Accesul la date este secvențial: trebuie citită sau scrisă mai întâi linia precedentă.</p>
+                    </div>
+                    <div class="tutorial-detail-content">
+                        <div class="tutorial-detail-section">
+                            <h2>Moduri de prelucrare a fișierelor text:</h2>
+                        </div>
+                            <p class="text-muted">Aplicat teoretic si la fișierele secvențiale.</p>
+                        <div class="tutorial-detail-section">
+                            <p>La nivel de caractere</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Datele se citesc sau se scriu caracter cu caracter.</li>
+                                <li>Programatorul decide cum să combine caracterele în numere sau șiruri de caractere.</li>
+                                <li>Util pentru prelucrarea textelor: secvențierea în cuvinte, propoziții, silabe etc.</li>
+                            </ul>
+                            <p>La nivel de lexeme</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Datele se citesc sau scriu ca unități logice: numere întregi, reale sau șiruri de caractere.</li>
+                                <li>Lexemele trebuie delimitate prin spațiu, tabulator sau sfârșit de linie.</li>
+                                <li>Util pentru date numerice și calcule (de exemplu, laturile unui triunghi).</li>
+                            </ul>
+                            <p>La nivel de linii</p>
+                            <ul style="list-style-type: disc;">
+                                <li>Datele se citesc sau scriu linie cu linie.</li>
+                                <li>Permite manipularea atât a caracterelor, cât și a lexemelor.</li>
+                                <li>Simplifică prelucrarea fișierelor text pentru afișare sau procesare mai complexă.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tutorial-detail-actions">
+                        <button class="btn btn-secondary" onclick="showPage('alltutorials'); return false;">← Înapoi</button>
+                        <button class="btn btn-primary btn-read" onclick="completeTutorial(8); return false;">✓ Marcați ca Citit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4 class="gradient-text">DocOctavius</h4>
+                    <p class="text-muted">Învață C++.</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Learn</h4>
+                    <ul>
+                        <li><a href="#" onclick="showPage('tutorials'); return false;">Tutoriale</a></li>
+                        <li><a href="#" onclick="showPage('docs'); return false;">Documentații</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Resurse</h4>
+                    <p>Intelect și un laptop</p>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <a href="https://www.instagram.com/ben._.jaminoct/">Instagram</a>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 DocOctavius. Toate drepturile rezervate. | Învață C++ corect.</p>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+    
+    <script>
+        // ===========================
+        // TUTORIALS DATA
+        // ===========================
+
+        const tutorialsData = [
+            { id: 1, title: "Date simple și date structurate"},
+            { id: 2, title: "Tablouri unidimensionale și bidimensionale"},
+            { id: 3, title: "Șiruri de caractere"},
+            { id: 4, title: "Articol"},
+            { id: 5, title: "Tipuri de date mulțime"},
+            { id: 6, title: "Generalităţi despre fişiere"},
+            { id: 7, title: "Fișiere secvențiale"},
+            { id: 8, title: "Fișiere text"}
+        ];
+
+        // ===========================
+        // LOCALSTORAGE MANAGEMENT
+        // ===========================
+
+        function initializeProgress() {
+            const stored = localStorage.getItem('cpp-tutorials-progress');
+            if (!stored) {
+                // ===========================
+                // Initialize with first lesson unlocked
+                // ===========================
+                const progress = {
+                    completed: [],
+                    unlocked: [1]
+                };
+                localStorage.setItem('cpp-tutorials-progress', JSON.stringify(progress));
+                return progress;
+            }
+            return JSON.parse(stored);
+        }
+
+        function getProgress() {
+            const stored = localStorage.getItem('cpp-tutorials-progress');
+            return stored ? JSON.parse(stored) : initializeProgress();
+        }
+
+        function completeTutorial(lessonId) {
+            const progress = getProgress();
+
+            // ===========================
+            // Mark as completed
+            // ===========================
+            if (!progress.completed.includes(lessonId)) {
+                progress.completed.push(lessonId);
+            }
+
+            // ===========================
+            // Unlock next lesson
+            // ===========================
+            const nextLessonId = lessonId + 1;
+            if (nextLessonId <= 8 && !progress.unlocked.includes(nextLessonId)) {
+                progress.unlocked.push(nextLessonId);
+            }
+
+            localStorage.setItem('cpp-tutorials-progress', JSON.stringify(progress));
+
+            // ===========================
+            // Show success message and navigate back
+            // ===========================
+            alert('✓ Lecție completată! Ai deblocat lecția ' + nextLessonId + '.');
+            showPage('alltutorials');
+            renderTutorialsList();
+        }
+
+        function isLocked(lessonId) {
+            const progress = getProgress();
+            return !progress.unlocked.includes(lessonId);
+        }
+
+        function isCompleted(lessonId) {
+            const progress = getProgress();
+            return progress.completed.includes(lessonId);
+        }
+
+        // ===========================
+        // RENDER TUTORIALS LIST
+        // ===========================
+
+        function renderTutorialsList() {
+            const tutorialsList = document.getElementById('tutorials-list');
+            const progress = getProgress();
+            const completedCount = progress.completed.length;
+            const progressPercentage = (completedCount / 8) * 100;
+
+            // ===========================
+            // Update progress display
+            // ===========================
+            document.getElementById('progress-count').textContent = completedCount;
+            document.getElementById('progress-fill').style.width = progressPercentage + '%';
+
+            // ===========================
+            // Clear and render tutorials
+            // ===========================
+            tutorialsList.innerHTML = '';
+
+            tutorialsData.forEach(tutorial => {
+                const locked = isLocked(tutorial.id);
+                const completed = isCompleted(tutorial.id);
+
+                const tutorialItem = document.createElement('div');
+                tutorialItem.className = 'tutorial-item' + (locked ? ' locked' : '');
+
+                if (!locked) {
+                    tutorialItem.style.cursor = 'pointer';
+                    tutorialItem.onclick = function() {
+                        showPage('tutorial-' + tutorial.id);
+                    };
+                }
+
+                const statusIcon = completed ? '✓' : (locked ? '🔒' : '▶');
+                const statusClass = completed ? 'completat' : (locked ? 'blocat' : '');
+
+                tutorialItem.innerHTML = `
+                    <div class="tutorial-item-header">
+                        <div class="tutorial-item-number">${tutorial.id}</div>
+                        <div class="tutorial-item-status ${statusClass}">${statusIcon}</div>
+                    </div>
+                    <div class="tutorial-item-title">${tutorial.title}</div>
+                    <div class="tutorial-item-meta">
+                        ${locked ? 'Blocat - Citește lecția ' + (tutorial.id - 1) + ' pentru a debloca' : (completed ? 'Completat' : 'Apasă pentru a citi')}
+                    </div>
+                `;
+
+                tutorialsList.appendChild(tutorialItem);
+            });
+        }
+
+        // ===========================
+        // MOBILE MENU TOGGLE
+        // ===========================
+
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+
+        // ===========================
+        // Close mobile menu when a link is clicked
+        // ===========================
+        const links = navLinks.querySelectorAll('a');
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // ===========================
+        // PAGE NAVIGATION
+        // ===========================
+
+        function showPage(pageName) {
+            // ===========================
+            // Hide all pages
+            // ===========================
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // ===========================
+            // Show selected page
+            // ===========================
+            const selectedPage = document.getElementById('page-' + pageName);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+                window.scrollTo(0, 0);
+
+                // ===========================
+                // Render tutorials list if navigating to it
+                // ===========================
+                if (pageName === 'alltutorials') {
+                    renderTutorialsList();
+                }
+            }
+
+            return false;
+        }
+
+        // ===========================
+        // Initialize progress on page load
+        // ===========================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProgress();
+        });
+    </script>
+</body>
+</html>
+
